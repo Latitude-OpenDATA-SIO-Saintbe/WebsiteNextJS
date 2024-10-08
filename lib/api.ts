@@ -47,5 +47,6 @@ export const updateURLAndFetchData = (startDate: string, endDate: string, city: 
 
     // Fetch data using the newly constructed URL
     const apiUrl = `/api/${startDate}${endDate ? `:${endDate}` : ''}${city ? `/${city}` : ''}${city && category ? `/${category}` : ''}`;
+    let data;
     return data = fetchMeteoData(apiUrl);
 };

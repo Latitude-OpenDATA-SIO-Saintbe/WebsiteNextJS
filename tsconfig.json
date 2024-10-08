@@ -16,8 +16,20 @@
     "moduleResolution": "bundler",
     "baseUrl": "./",
     "paths": {
-      "@/components/*": [
-        "components/*"
+      "@/lib": [
+        "./lib/*"
+      ],
+      "@/components": [
+        "./components/*"
+      ],
+      "@/lib/utils": [
+        "./lib/utils"
+      ],
+      "@/components/ui": [
+        "./components/ui/*"
+      ],
+      "@/hooks": [
+        "./hooks/*"
       ]
     },
     "resolveJsonModule": true,

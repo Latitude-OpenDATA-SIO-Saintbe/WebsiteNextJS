@@ -66,7 +66,6 @@ export default async function Home({params: {locale}}: { params: { locale: strin
                 })}
             </p>
             <p>{t2('and.more.test')}</p>
-            <p>{t('missing.translation.in.fr')}</p>
             <p>
                 {t('cows', {
                     count: 1,

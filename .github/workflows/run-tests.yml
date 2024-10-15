@@ -1,9 +1,10 @@
 name: Run Tests
 
 on:
+  push:
+    branches: [ main, master, dev ]
   pull_request:
-    branches:
-      - dev  # Change to your main branch if different
+    branches: [ main, master, dev ]
 
 jobs:
   test:

@@ -1,29 +1,44 @@
-// pages/_document.tsx
+import { AppProps } from 'next/app';
+import Script from 'next/script';
 
-import Document, { Html, Head, Main, NextScript } from 'next/document';
+function MyApp({ Component, pageProps }: AppProps) {
+  return (
+    <>
+      {/* Scripts HERE */}
+      <Script
+        src="https://js.api.here.com/v3/3.1/mapsjs-core.js"
+        strategy="beforeInteractive"
+        onLoad={() => console.log('Script core chargé')}
+        onError={(e) => console.error('Erreur lors du chargement du script core', e)}
+      />
+      <Script
+        src="https://js.api.here.com/v3/3.1/mapsjs-service.js"
+        strategy="beforeInteractive"
+        onLoad={() => console.log('Script service chargé')}
+        onError={(e) => console.error('Erreur lors du chargement du script service', e)}
+      />
+      <Script
+        src="https://js.api.here.com/v3/3.1/mapsjs-ui.js"
+        strategy="beforeInteractive"
+        onLoad={() => console.log('Script UI chargé')}
+        onError={(e) => console.error('Erreur lors du chargement du script UI', e)}
+      />
+      <Script
+        src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js"
+        strategy="beforeInteractive"
+        onLoad={() => console.log('Script mapevents chargé')}
+        onError={(e) => console.error('Erreur lors du chargement du script mapevents', e)}
+      />
 
-class MyDocument extends Document {
-  render() {
-    return (
-      <Html>
-        <Head>
-          <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" />
-          <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" />
-          <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" />
-          <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" />
-          <link
-            rel="stylesheet"
-            href="https://js.api.here.com/v3/3.1/mapsjs-ui.css"
-          />
-        </Head>
-        <body>
-          <Main />
-          <NextScript />
-        </body>
-      </Html>
-    );
-  }
+      {/* Composant de page */}
+      <Component {...pageProps} />
+    </>
+  );
 }
 
-export default MyDocument;
+export default MyApp;
+
+
+
+
 

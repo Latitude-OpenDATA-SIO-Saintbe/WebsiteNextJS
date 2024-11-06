@@ -8,7 +8,9 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "test:jest": "jest --config jest.config.js",
+    "test:playwright": "npx playwright test"
   },
   "dependencies": {
     "@radix-ui/react-alert-dialog": "^1.1.2",

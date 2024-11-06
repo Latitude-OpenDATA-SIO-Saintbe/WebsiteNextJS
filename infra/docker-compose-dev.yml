@@ -24,17 +24,23 @@ services:
     container_name: dotnet_api-build
     working_dir: /app
     volumes:
-      - ./dotnet-api:/app
+      - dotnet:/app
     command: >
-      sh -c "dotnet restore Metheo.Api/Metheo.Api.csproj && \
-              dotnet publish Metheo.Api/Metheo.Api.csproj -c Release -o /app/publish /p:UseAppHost=false"
+      sh -c "apk add --no-cache git curl && \
+             git pull https://github.com/Latitude-OpenDATA-SIO-Saintbe/DotnetApi && \
+             dotnet restore Metheo.Api/Metheo.Api.csproj && \
+             dotnet publish Metheo.Api/Metheo.Api.csproj -c Release -o /app/publish /p:UseAppHost=false"
+    networks:
+      - laravel_dotnet_network
+      - node_dotnet_network
+
 
   dotnet_api:
     image: mcr.microsoft.com/dotnet/aspnet:8.0-alpine
     container_name: dotnet_api
     working_dir: /app
     volumes:
-      - ./dotnet-api:/app
+      - dotnet:/app
     environment:
       ASPNETCORE_ENVIRONMENT: Production
     ports:
@@ -49,3 +55,4 @@ services:
 
 volumes:
   pgdata:
+  dotnet:

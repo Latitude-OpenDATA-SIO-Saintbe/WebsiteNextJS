@@ -1,6 +1,8 @@
 version: '3.8'
 
 networks:
+  laravel_dotnet_network:
+    driver: bridge
   node_dotnet_network:
     driver: bridge
 

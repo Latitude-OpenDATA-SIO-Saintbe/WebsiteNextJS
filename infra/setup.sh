@@ -1,8 +1,5 @@
 #!/bin/bash
 
-# Move up one directory level
-cd ..
-
 # Start the Docker container in detached mode
 echo "Starting the Docker container..."
 docker-compose -f ./infra/docker-compose-dev.yml up -d

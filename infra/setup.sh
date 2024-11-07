@@ -16,6 +16,8 @@ git clone --branch main https://github.com/Latitude-OpenDATA-SIO-Saintbe/PythonP
 echo "Running database setup script..."
 bash ./db-seed/setup-py.sh
 
+npm install
+
 echo "All tasks completed successfully."
 
 echo "you can now ether do npm run dev to view application or you can do npm run test to test the application" 

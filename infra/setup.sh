@@ -13,11 +13,11 @@ docker-compose -f ./infra/docker-compose-dev.yml ps
 
 # Clone the setup repository
 echo "Cloning the setup repository..."
-git clone --branch main https://github.com/Latitude-OpenDATA-SIO-Saintbe/PythonPopPostgres.git /setupDB
+git clone --branch main https://github.com/Latitude-OpenDATA-SIO-Saintbe/PythonPopPostgres.git ./db-seed
 
 # Run the setup script to create and seed the database
 echo "Running database setup script..."
-bash /setupDB/setup-py.sh
+bash ./db-seed/setup-py.sh
 
 echo "All tasks completed successfully."
 

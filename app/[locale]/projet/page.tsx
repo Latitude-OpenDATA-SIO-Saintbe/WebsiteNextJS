@@ -1,10 +1,10 @@
-'use client'
-
-import React from 'react';
+export const experimental_ppr = true
 import HereMap from '../../../components/ui/map';
 import Banner from '../../../components/ui/banner';
+import { Suspense } from "react"
 
-const Page = () => {
+const Page = async () => {
+  "use server"
   return (
     <>
       <div>
@@ -12,7 +12,7 @@ const Page = () => {
       </div>
       <div>
         <h1>Carte</h1>
-        <HereMap />
+        <Suspense fallback={<div />}><HereMap /></Suspense>
       </div>
     </>
   );

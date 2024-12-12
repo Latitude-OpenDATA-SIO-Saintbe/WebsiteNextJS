@@ -1,8 +1,10 @@
-import type {ReactElement} from 'react';
+export const experimental_ppr = true
+
+import {Suspense, type ReactElement} from 'react';
 import './globals.css';
 import {Switch} from './switch';
 import Link from 'next/link';
-// import { getStaticParams } from '../../locales/server';
+import { getStaticParams } from '../../locales/server';
 
 export const metadata = {
     title: 'Create Next App',
@@ -10,24 +12,26 @@ export const metadata = {
 };
 
 // Uncomment to test Static Generation for all pages
-// export function generateStaticParams() {
-//   return getStaticParams();
-// }
+export async function generateStaticParams() {
+  "use server"
+  return getStaticParams();
+}
 
-export default function RootLayout({children}: { children: ReactElement }) {
+export default async function RootLayout({children}: { children: ReactElement }) {
+    "use server"
     return (
         <html lang="en">
         <body>
         {/* Uncomment the suspense boundary if using `preserveSearchParams` in `useChangeLocale()` */}
-        {/* <Suspense> */}
-        <Switch/>
-        {/* </Suspense> */}
+        <Suspense fallback={<div>Loading Switch...</div>}>
+            <Switch/>
+        </Suspense>
         <ul>
             <li>
                 <Link href="/">Go to /</Link>
             </li>
             <li>
-                <Link href="/subpage">Go to /subpage</Link>
+                <Link href="/projet">Go to /project</Link>
             </li>
             <li>
                 <Link href="/client">Go to /client</Link>

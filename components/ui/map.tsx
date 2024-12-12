@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useEffect, useRef, useState } from 'react';
 
 const HereMap = () => {
@@ -19,28 +21,34 @@ const HereMap = () => {
     };
 
     const initializeMap = () => {
-      if (window.H && mapRef.current && !isMapInitialized) {
-        const platform = new window.H.service.Platform({
-          apikey: 'TZGMfFjWVd1Xakcknrs_qdO4AAtWcTt3uONGSDTs8LI',
-        });
+        const apiKey = "TZGMfFjWVd1Xakcknrs_qdO4AAtWcTt3uONGSDTs8LI";
 
-        const defaultLayers = platform.createDefaultLayers();
-        mapInstance.current = new window.H.Map(
-          mapRef.current,
-          defaultLayers.vector.normal.map,
-          {
-            zoom: 6,
-            center: { lat: 46.603354, lng: 1.888334 },
-          }
-        );
+        if (!apiKey) {
+          console.error("HERE Maps API key is missing!");
+          return;
+        }
 
-        const mapEvents = new window.H.mapevents.MapEvents(mapInstance.current);
-        new window.H.mapevents.Behavior(mapEvents);
-        window.H.ui.UI.createDefault(mapInstance.current, defaultLayers);
+        if (window.H && mapRef.current && !mapInstance.current) {
+          const platform = new window.H.service.Platform({
+            apikey: apiKey,
+          });
 
-        setIsMapInitialized(true);
-      }
-    };
+          const defaultLayers = platform.createDefaultLayers();
+          mapInstance.current = new window.H.Map(
+            mapRef.current,
+            defaultLayers.vector.normal.map,
+            {
+              zoom: 6,
+              center: { lat: 46.603354, lng: 1.888334 },
+            }
+          );
+
+          const mapEvents = new window.H.mapevents.MapEvents(mapInstance.current);
+          new window.H.mapevents.Behavior(mapEvents);
+          window.H.ui.UI.createDefault(mapInstance.current, defaultLayers);
+        }
+      };
+
 
     const loadHereMapsScripts = async () => {
       try {
@@ -48,7 +56,7 @@ const HereMap = () => {
         await loadScript('https://js.api.here.com/v3/3.1/mapsjs-service.js');
         await loadScript('https://js.api.here.com/v3/3.1/mapsjs-ui.js');
         await loadScript('https://js.api.here.com/v3/3.1/mapsjs-mapevents.js');
-        
+
         if (window.H) {
           initializeMap();
         } else {

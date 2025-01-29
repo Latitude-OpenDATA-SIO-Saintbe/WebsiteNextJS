@@ -1,10 +1,9 @@
-export const experimental_ppr = true
-
-import {Suspense, type ReactElement} from 'react';
+import {type ReactElement, Suspense} from 'react';
 import './globals.css';
-import {Switch} from './switch';
-import Link from 'next/link';
-import { getStaticParams } from '../../locales/server';
+import {getStaticParams} from '../../locales/server';
+import Banner from '../../components/banner';
+import {ThemeProvider} from "../../components/theme-provider"
+import {Skeleton} from '../../components/ui/skeleton';
 
 export const metadata = {
     title: 'Create Next App',
@@ -22,22 +21,19 @@ export default async function RootLayout({children}: { children: ReactElement })
     return (
         <html lang="en">
         <body>
-        {/* Uncomment the suspense boundary if using `preserveSearchParams` in `useChangeLocale()` */}
-        <Suspense fallback={<div>Loading Switch...</div>}>
-            <Switch/>
+        <Suspense fallback={<Skeleton/>}>
+            <ThemeProvider
+                attribute="class"
+                defaultTheme="system"
+                enableSystem
+                disableTransitionOnChange
+            >
+                <div>
+                    <Banner text="Bienvenue sur notre projet !"/>
+                </div>
+                {children}
+            </ThemeProvider>
         </Suspense>
-        <ul>
-            <li>
-                <Link href="/">Go to /</Link>
-            </li>
-            <li>
-                <Link href="/projet">Go to /project</Link>
-            </li>
-            <li>
-                <Link href="/client">Go to /client</Link>
-            </li>
-        </ul>
-        {children}
         </body>
         </html>
     );

@@ -11,7 +11,7 @@ const nextConfig = {
         dynamicIO: true,
         ppr: 'incremental',
     },
-    reactStrictMode: false,
+    reactStrictMode: true,
     // Uncomment to set base path
     // basePath: '/base',
     // Uncomment to use Static Export

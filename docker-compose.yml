@@ -2,9 +2,7 @@ version: '3.8'
 
 services:
   node_service:
-    build:
-      context: ./
-      dockerfile: Dockerfile
+    image: node:22-alpine
     container_name: nextjs_app
     working_dir: /app
     volumes:

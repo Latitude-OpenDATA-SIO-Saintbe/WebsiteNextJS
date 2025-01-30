@@ -1,41 +1,68 @@
-import {unstable_cacheLife as cacheLife, unstable_cacheTag as cacheTag} from 'next/cache';
+export function transformHourlyData(rawData) {
+    const { time, ...models } = rawData.hourly;
 
-export const transformData = async (rawData: any) => {
-    "use cache";
-    cacheLife('weeks')
-    cacheTag(rawData)
-    return rawData.time.map((date: string, index: number) => {
-        const groupedData: any = {
-            date,
-            temperature_2m_mean: [
-                {model: 'CMCC', value: rawData.temperature_2m_mean_CMCC_CM2_VHR4?.[index] ?? 0},
-                {model: 'FGOALS', value: rawData.temperature_2m_mean_FGOALS_f3_H?.[index] ?? 0},
-                {model: 'HiRAM', value: rawData.temperature_2m_mean_HiRAM_SIT_HR?.[index] ?? 0},
-                {model: 'MRI', value: rawData.temperature_2m_mean_MRI_AGCM3_2_S?.[index] ?? 0},
-                {model: 'EC_Earth', value: rawData.temperature_2m_mean_EC_Earth3P_HR?.[index] ?? 0},
-                {model: 'MPI', value: rawData.temperature_2m_mean_MPI_ESM1_2_XR?.[index] ?? 0},
-                {model: 'NICAM', value: rawData.temperature_2m_mean_NICAM16_8S?.[index] ?? 0},
-            ],
-            temperature_2m_max: [
-                {model: 'CMCC', value: rawData.temperature_2m_max_CMCC_CM2_VHR4?.[index] ?? 0},
-                {model: 'FGOALS', value: rawData.temperature_2m_max_FGOALS_f3_H?.[index] ?? 0},
-                {model: 'HiRAM', value: rawData.temperature_2m_max_HiRAM_SIT_HR?.[index] ?? 0},
-                {model: 'MRI', value: rawData.temperature_2m_max_MRI_AGCM3_2_S?.[index] ?? 0},
-                {model: 'EC_Earth', value: rawData.temperature_2m_max_EC_Earth3P_HR?.[index] ?? 0},
-                {model: 'MPI', value: rawData.temperature_2m_max_MPI_ESM1_2_XR?.[index] ?? 0},
-                {model: 'NICAM', value: rawData.temperature_2m_max_NICAM16_8S?.[index] ?? 0},
-            ],
-            rain_sum: [
-                {model: 'CMCC', value: rawData.rain_sum_CMCC_CM2_VHR4?.[index] ?? 0},
-                {model: 'FGOALS', value: rawData.rain_sum_FGOALS_f3_H?.[index] ?? 0},
-                {model: 'HiRAM', value: rawData.rain_sum_HiRAM_SIT_HR?.[index] ?? 0},
-                {model: 'MRI', value: rawData.rain_sum_MRI_AGCM3_2_S?.[index] ?? 0},
-                {model: 'EC_Earth', value: rawData.rain_sum_EC_Earth3P_HR?.[index] ?? 0},
-                {model: 'MPI', value: rawData.rain_sum_MPI_ESM1_2_XR?.[index] ?? 0},
-                {model: 'NICAM', value: rawData.rain_sum_NICAM16_8S?.[index] ?? 0},
-            ],
-        };
+    return time.map((timestamp, index) => {
+        const entry = { date: timestamp };
 
-        return groupedData;
+        Object.keys(models).forEach((model) => {
+            entry[model] = [{ model, value: models[model]?.[index] ?? null }];
+        });
+
+        return entry;
     });
-};
+}
+
+export function transformClimateData(rawData: RawData) {
+    const { time, ...models } = rawData.daily;
+
+    return time.map((timestamp, index) => {
+        const entry: { [key: string]: any } = { date: timestamp };
+
+        Object.keys(models).forEach((variable) => {
+            if (Array.isArray(models[variable]) && models[variable][index] !== undefined) {
+                const modelSuffixes = [
+                    'CMCC_CM2_VHR4',
+                    'FGOALS_f3_H',
+                    'HiRAM_SIT_HR',
+                    'MRI_AGCM3_2_S',
+                    'EC_Earth3P_HR',
+                    'MPI_ESM1_2_XR',
+                    'NICAM16_8S'
+                ];
+
+                let model = '';
+                modelSuffixes.forEach((suffix) => {
+                    if (variable.endsWith(suffix)) {
+                        model = suffix;
+                        variable = variable.replace(`_${suffix}`, '');
+                    }
+                });
+
+                if (!entry[variable]) {
+                    entry[variable] = [];
+                }
+
+                entry[variable].push({
+                    model: model,
+                    value: models[variable][index] ?? null
+                });
+            }
+        });
+
+        return entry;
+    });
+}
+
+export function transformDailyData(rawData) {
+    const { time, ...models } = rawData.daily;
+
+    return time.map((timestamp, index) => {
+        const entry = { date: timestamp };
+
+        Object.keys(models).forEach((model) => {
+            entry[model] = [{ model, value: models[model]?.[index] ?? null }];
+        });
+
+        return entry;
+    });
+}

@@ -8,9 +8,11 @@ import {ChartConfig, ChartContainer, ChartTooltip, ChartTooltipContent,} from ".
 
 interface ChartCanvasProps {
     chartData: Array<any>;
+    dataType: string;
 }
 
-export function ChartCanvas({chartData}: ChartCanvasProps) {
+export function ChartCanvas({chartData, dataType}: ChartCanvasProps) {
+    console.log(chartData);
     const [activeChart, setActiveChart] = React.useState<string>("temperature_2m_mean");
     const [selectedModels, setSelectedModels] = React.useState<string[]>([]); // Use array for multiple models
     const [startDate, setStartDate] = React.useState<string | null>(null);
@@ -91,6 +93,7 @@ export function ChartCanvas({chartData}: ChartCanvasProps) {
                                 />
                             }
                         />
+                        {/* if dataType is Climate then show this */}
                         {filteredChartData[0]?.[activeChart]?.map((modelData: any, index: number) => {
                             // Only render the selected models
                             if (selectedModels.length > 0 && !selectedModels.includes(modelData.model)) {
